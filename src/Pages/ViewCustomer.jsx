@@ -10,6 +10,7 @@ import {
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 // import Navbar from "../Components/Navbar";
 import Alert from "../Components/Alert";
+import { getProtectedResource } from "../Services/AuthService";
 
 function ViewCustomer() {
   const [selectedCustomer, setSelectedCustomer] = useState({
@@ -36,6 +37,13 @@ function ViewCustomer() {
     setAlert({ show: false, message: "" });
   };
   useEffect(() => {
+    getProtectedResource("getCustomer")
+      .then((response) => {
+        console.log("Customer data:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Customer resource:", error);
+      });
     fetchCustomer();
   }, [search, sortField, sortOrder, filterAge, page]);
 
@@ -153,9 +161,9 @@ function ViewCustomer() {
     axios({
       url: "http://localhost:8081/export/pdf",
       method: "GET",
-      responseType: "blob", 
+      responseType: "blob",
     }).then((response) => {
-      console.log(response)
+      console.log(response);
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -179,7 +187,6 @@ function ViewCustomer() {
       link.click();
     });
   };
-
 
   return (
     <>
@@ -232,7 +239,7 @@ function ViewCustomer() {
               <option value="excel">To excel</option>
             </select> */}
             <select
-             className="p-2 rounded"
+              className="p-2 rounded"
               onChange={(e) => {
                 if (e.target.value === "pdf") exportToPDF();
                 else if (e.target.value === "excel") exportToExcel();

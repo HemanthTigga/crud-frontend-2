@@ -11,6 +11,6 @@ export const AuthHeader = ()=>{
     }
 };
 
-export const getProtectedResource = ()=>{
-    return axios.get(`${API_URL}/protected`,{headers:AuthHeader()});
+export const getProtectedResource = (endpoint)=>{
+    return axios.get(`${API_URL}${endpoint}`,{headers:AuthHeader()});
 };

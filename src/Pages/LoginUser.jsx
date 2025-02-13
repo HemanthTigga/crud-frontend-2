@@ -4,26 +4,29 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "../Components/Alert";
-const API_URL = "http://localhost:8081/";
+import { getProtectedResource } from "../Services/AuthService";
+// import { getProtectedResource } from "../Services/AuthService";
 
-export const AuthHeader = () => {
-  const token = sessionStorage.getItem("jwtToken");
-  console.log("token : ", token);
-  if (token) {
-    console.log("Authorization header set");
-    return { Authorization: "Bearer " + token };
-  } else {
-    console.log("No token found");
-    return {};
-  }
-};
+// const API_URL = "http://localhost:8081/";
 
-export const getProtectedResource = () => {
-  console.log("Calling getProtectedResource");
-  const headers = AuthHeader();
-  console.log("Headers: ", headers);
-  return axios.get(`${API_URL}getCustomer`, {headers:  headers });
-};
+// export const AuthHeader = () => {
+//   const token = sessionStorage.getItem("jwtToken");
+//   console.log("token : ", token);
+//   if (token) {
+//     console.log("Authorization header set");
+//     return { Authorization: "Bearer " + token };
+//   } else {
+//     console.log("No token found");
+//     return {};
+//   }
+// };
+
+// export const getProtectedResource = () => {
+//   console.log("Calling getProtectedResource");
+//   const headers = AuthHeader();
+//   console.log("Headers: ", headers);
+//   return axios.get(`${API_URL}getCustomer`, {headers:  headers });
+// };
 
 export default function LoginUser() {
   const navigate = useNavigate();
@@ -85,7 +88,7 @@ export default function LoginUser() {
         navigate("/");
 
         // Call the protected resource function after login
-        getProtectedResource()
+        getProtectedResource('')
           .then((response) => {
             console.log("Protected resource data:", response.data);
           })
